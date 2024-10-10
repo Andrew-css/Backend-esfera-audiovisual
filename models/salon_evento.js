@@ -11,7 +11,7 @@ const salonEventoSchema = new mongoose.Schema({
     latitud: { type: String, required: true },
     longitud: { type: String, required: true },
     video360: { type: String },
-    foto360: { type: String },
+    video_sal: { type: String },
     idCiudSalonEvento: { type: mongoose.Schema.Types.ObjectId, ref: "CiudadSalonEvento", required: true },
     idContactoSalon: { type: mongoose.Schema.Types.ObjectId, ref: "ContactoSalon", required: true },
     idAmbienteSalon: [{ type: mongoose.Schema.Types.ObjectId, ref: "AmbienteSalon", required: true }],

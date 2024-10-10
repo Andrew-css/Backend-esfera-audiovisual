@@ -37,12 +37,13 @@ const httpContactoSalon = {
   // Registrar un nuevo contacto de salón
   registro: async (req, res) => {
     try {
-      const { nombre_cont, correo_cont, telefono_cont } = req.body;
+      const { nombre_cont, correo_cont, telefono_cont, telefono_whats } = req.body;
 
       const contactoSalon = new ContactoSalon({
         nombre_cont,
         correo_cont,
         telefono_cont,
+        telefono_whats,
       });
 
       await contactoSalon.save();
@@ -57,7 +58,7 @@ const httpContactoSalon = {
   editar: async (req, res) => {
     try {
       const { id } = req.params;
-      const { nombre_cont, correo_cont, telefono_cont } = req.body;
+      const { nombre_cont, correo_cont, telefono_cont, telefono_whats } = req.body;
 
       const contactoSalon = await ContactoSalon.findByIdAndUpdate(
         id,
@@ -65,11 +66,12 @@ const httpContactoSalon = {
           nombre_cont,
           correo_cont,
           telefono_cont,
+          telefono_whats,
         },
         { new: true }
       );
 
-      if (!contactoSalon) return res.status(404).json({ message: "ContactoSalon no encontrado" });
+      if (!contactoSalon) return res.status(404).json({ message: "Contacto salon no encontrado" });
 
       res.json(contactoSalon);
     } catch (error) {
@@ -86,7 +88,7 @@ const httpContactoSalon = {
         { estado: true },
         { new: true }
       );
-      if (!contactoSalon) return res.status(404).json({ message: "ContactoSalon no encontrado" });
+      if (!contactoSalon) return res.status(404).json({ message: "Contacto salon no encontrado" });
       res.json(contactoSalon);
     } catch (error) {
       res.status(500).json({ error });
@@ -102,7 +104,7 @@ const httpContactoSalon = {
         { estado: false },
         { new: true }
       );
-      if (!contactoSalon) return res.status(404).json({ message: "ContactoSalon no encontrado" });
+      if (!contactoSalon) return res.status(404).json({ message: "Contacto salon no encontrado" });
       res.json(contactoSalon);
     } catch (error) {
       res.status(500).json({ error });
