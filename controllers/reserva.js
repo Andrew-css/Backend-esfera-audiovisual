@@ -176,8 +176,9 @@ const httpReserva = {
           }, ${salon.idCiudSalonEvento.idDepart.nombre_depart}</p>
                 <p>Dirección: ${salon.direccion_sal}</p>
                 <p>Teléfono: ${salon.idContactoSalon.telefono_cont}</p>
+                ${salon.idContactoSalon.telefono_whats ? `<p>WhatsApp: ${salon.idContactoSalon.telefono_whats}</p>` : ""}
               </div>
-              <div style="margin-left: 20px;">
+              <div style="margin-left: 50px;">
                 <img src="${salon.galeria_sal[0]?.url
           }" alt="Imagen del salón" style="width: 150px; height: auto; border-radius: 8px; object-fit: cover;" />
               </div>
