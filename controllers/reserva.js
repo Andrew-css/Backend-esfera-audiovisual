@@ -354,7 +354,7 @@ const httpReserva = {
         return res.status(404).json({ error: "No se encontró el salón o su contacto" });
       }
 
-      const admin = await Admin.findOne();
+      const admin = await Admin.findOne().sort({ createdAt: 1 });
 
       if (!admin) {
         return res.status(404).json({ error: "No se encontró el administrador" });

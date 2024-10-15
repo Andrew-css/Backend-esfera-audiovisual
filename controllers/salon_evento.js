@@ -199,16 +199,16 @@ const httpSalonEvento = {
   getSalonesDestacados: async (req, res) => {
     try {
       const salonesDestacados = await SalonEvento.find({
-        posicion_banner: { $ne: null, $exists: true } // Excluye nulos y campos inexistentes
-      })
-        .sort({ posicion_banner: 1 }) // Ordenar por la posición del banner
+        posicion_banner: { $ne: null, $exists: true }, // Excluye nulos y campos inexistentes
+      }).sort({ posicion_banner: 1 }); // Ordenar por la posición del banner
 
       res.status(200).json(salonesDestacados);
     } catch (error) {
-      res.status(500).json({ message: "Error al obtener salones destacados", error });
+      res
+        .status(500)
+        .json({ message: "Error al obtener salones destacados", error });
     }
   },
-
 
   // Registrar un nuevo salon de evento
   registro: async (req, res) => {
@@ -292,6 +292,21 @@ const httpSalonEvento = {
         posicion_banner,
       } = req.body;
 
+      // 1. Verificar si ya existe un salón con la misma posición de banner
+      if (posicion_banner) {
+        const salonConPosicion = await SalonEvento.findOne({
+          posicion_banner,
+          _id: { $ne: id }, // Excluir el salón actual
+        });
+
+        if (salonConPosicion) {
+          return res.status(400).json({
+            error: `El salón '${salonConPosicion.nombre_sal}' ya tiene la posición ${posicion_banner} en el banner. Por favor escoja otra diferente.`,
+          });
+        }
+      }
+
+      // 2. Realizar la actualización si no hay conflicto de posición de banner
       const salonEvento = await SalonEvento.findByIdAndUpdate(
         id,
         {
@@ -327,8 +342,9 @@ const httpSalonEvento = {
         .populate("idUbicacionSalon");
 
       if (!salonEvento)
-        return res.status(404).json({ message: "Salon no encontrado" });
+        return res.status(404).json({ message: "Salón no encontrado" });
 
+      // 3. Devolver la respuesta con el salón actualizado
       res.json(salonEvento);
     } catch (error) {
       res.status(500).json({ error });
