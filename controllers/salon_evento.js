@@ -196,6 +196,20 @@ const httpSalonEvento = {
     }
   },
 
+  getSalonesDestacados: async (req, res) => {
+    try {
+      const salonesDestacados = await SalonEvento.find({
+        posicion_banner: { $ne: null, $exists: true } // Excluye nulos y campos inexistentes
+      })
+        .sort({ posicion_banner: 1 }) // Ordenar por la posición del banner
+
+      res.status(200).json(salonesDestacados);
+    } catch (error) {
+      res.status(500).json({ message: "Error al obtener salones destacados", error });
+    }
+  },
+
+
   // Registrar un nuevo salon de evento
   registro: async (req, res) => {
     try {
@@ -275,6 +289,7 @@ const httpSalonEvento = {
         idServiciosSalon,
         idTipoSalon,
         idUbicacionSalon,
+        posicion_banner,
       } = req.body;
 
       const salonEvento = await SalonEvento.findByIdAndUpdate(
@@ -299,6 +314,7 @@ const httpSalonEvento = {
           idServiciosSalon,
           idTipoSalon,
           idUbicacionSalon,
+          posicion_banner,
         },
         { new: true }
       )

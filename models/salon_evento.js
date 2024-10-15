@@ -4,8 +4,8 @@ const salonEventoSchema = new mongoose.Schema({
     nombre_sal: { type: String, required: true },
     descripcion_sal: { type: String, required: true },
     galeria_sal: [{ url: { type: String }, publicId: { type: String } }],
-    capacidad_min: { type: Number, required: true },  
-    capacidad_max: { type: Number, required: true }, 
+    capacidad_min: { type: Number, required: true },
+    capacidad_max: { type: Number, required: true },
     direccion_sal: { type: String, required: true },
     precio_sal: { type: Number, required: true },
     latitud: { type: String, required: true },
@@ -19,6 +19,7 @@ const salonEventoSchema = new mongoose.Schema({
     idServiciosSalon: [{ type: mongoose.Schema.Types.ObjectId, ref: "ServicioSalon", required: true }],
     idTipoSalon: [{ type: mongoose.Schema.Types.ObjectId, ref: "TipoSalon", required: true }],
     idUbicacionSalon: [{ type: mongoose.Schema.Types.ObjectId, ref: "UbicacionSalon", required: true }],
+    posicion_banner: { type: Number },
     createdAt: { type: Date, default: Date.now },
     estado: { type: Boolean, default: 1 }
 });

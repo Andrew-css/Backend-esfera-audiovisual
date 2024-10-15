@@ -13,8 +13,8 @@ router.get(
 
 router.get("/salones", httpSalonEvento.getFilteredSalones)
 
+router.get('/salones-destacados', httpSalonEvento.getSalonesDestacados);
 
-// Obtener un evento de salón por ID
 router.get(
   "/:id",
   [
@@ -35,6 +35,8 @@ router.get(
 );
 
 router.get('/salones/:location', httpSalonEvento.getSalonesByLocation);
+
+
 
 
 
