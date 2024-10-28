@@ -97,6 +97,7 @@ router.put(
     check("id", "Ingrese una ID válida").isMongoId(),
     check("nombre", "Digite el nombre").not().isEmpty(),
     check("apellido", "Digite el apellido").not().isEmpty(),
+    check("cedula", "Digite la cédula").not().isEmpty(),
     check("correo", "Digite el correo").not().isEmpty(),
     check("correo", "Dirección de correo no válida").isEmail(),
     check("telefono", "Digite el teléfono").not().isEmpty(),

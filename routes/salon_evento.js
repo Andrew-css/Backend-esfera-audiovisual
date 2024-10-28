@@ -15,6 +15,8 @@ router.get("/salones", httpSalonEvento.getFilteredSalones)
 
 router.get('/salones-destacados', httpSalonEvento.getSalonesDestacados);
 
+router.get('/salones-destacados-ubicacion', httpSalonEvento.getSalonesDestacadosByUbicacion);
+
 router.get(
   "/:id",
   [

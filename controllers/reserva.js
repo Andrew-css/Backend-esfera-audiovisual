@@ -47,28 +47,40 @@ const httpReserva = {
   //Redirigir a chat de WhatsApp
   contactanos: async (req, res) => {
     try {
-      const administrador = await Admin.findOne(); // Buscar el administrador
+      const administrador = await Admin.findOne();
+
       if (!administrador || !administrador.telefono) {
         return res.status(404).json({
           error: "No se encontró el administrador o su número de teléfono",
         });
       }
 
-      const numeroWhatsApp = `57${administrador.telefono}`;
+      const telefono = administrador.telefono.toString();
+      if (!/^\d{10}$/.test(telefono)) {
+        return res.status(400).json({
+          error: "El número de teléfono del administrador no es válido",
+        });
+      }
+
+      const numeroWhatsApp = `57${telefono}`;
 
       const mensajeWhatsApp =
-        "Hola, me gustaría postular mi salón de eventos en tu página web, ¿podrías darme más información por favor?";
+        "¡Bienvenido a Esfera Audiovisual!\n\n" +
+        "Estamos aquí para llevar tu salón de eventos a la vista de todos. " +
+        "Nuestra web app te ayuda a promocionar tus espacios y eventos de manera fácil y efectiva.\n\n" +
+        "¿Necesitas ayuda? Haz clic aquí para hablar con nuestro equipo de atención al cliente";
 
-      const enlaceWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(
-        mensajeWhatsApp
-      )}`;
+      const enlaceWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensajeWhatsApp)}`;
 
-      // Return the WhatsApp link as a JSON response
       res.json({ link: enlaceWhatsApp });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({
+        error: "Ocurrió un error en el servidor. Por favor, intenta de nuevo.",
+        details: error.message
+      });
     }
   },
+
 
   // Registrar una nueva reserva y enviar correos
   registro: async (req, res) => {

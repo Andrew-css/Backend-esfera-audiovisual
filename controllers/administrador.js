@@ -98,11 +98,11 @@ const httpAdministrador = {
   editarAdministrador: async (req, res) => {
     try {
       const { id } = req.params;
-      const { nombre, apellido, correo, telefono } = req.body;
+      const { nombre, apellido, cedula, correo, telefono } = req.body;
 
       const administrador = await Administrador.findByIdAndUpdate(
         id,
-        { nombre, apellido, correo, telefono },
+        { nombre, apellido, cedula, correo, telefono },
         { new: true }
       );
 

@@ -20,6 +20,7 @@ const salonEventoSchema = new mongoose.Schema({
     idTipoSalon: [{ type: mongoose.Schema.Types.ObjectId, ref: "TipoSalon", required: true }],
     idUbicacionSalon: [{ type: mongoose.Schema.Types.ObjectId, ref: "UbicacionSalon", required: true }],
     posicion_banner: { type: Number },
+    posicion_banner_ubicacion: { type: Number },
     createdAt: { type: Date, default: Date.now },
     estado: { type: Boolean, default: 1 }
 });

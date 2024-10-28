@@ -1,5 +1,6 @@
 import SalonEvento from "../models/salon_evento.js";
 import CiudadSalonEvento from "../models/ciudad_salon.js";
+import Departamento from "../models/departamento_salon.js";
 import DepartamentoSalonEvento from "../models/departamento_salon.js";
 
 const httpSalonEvento = {
@@ -210,6 +211,26 @@ const httpSalonEvento = {
     }
   },
 
+  getSalonesDestacadosByUbicacion: async (req, res) => {
+    try {
+      const salonesDestacados = await SalonEvento.find({
+        posicion_banner_ubicacion: { $ne: null, $exists: true },
+      })
+        .sort({ posicion_banner_ubicacion: 1 })
+        .populate({
+          path: "idCiudSalonEvento",
+          populate: { path: "idDepart" },
+        });
+
+      console.log(salonesDestacados); // Verifica los resultados
+      res.status(200).json(salonesDestacados);
+    } catch (error) {
+      console.error("Error en populate:", error); // Imprime el error
+      res.status(500).json({ message: "Error al obtener salones destacados por ubicación", error });
+    }
+  },
+
+
   // Registrar un nuevo salon de evento
   registro: async (req, res) => {
     try {
@@ -290,6 +311,7 @@ const httpSalonEvento = {
         idTipoSalon,
         idUbicacionSalon,
         posicion_banner,
+        posicion_banner_ubicacion,
       } = req.body;
 
       // 1. Verificar si ya existe un salón con la misma posición de banner
@@ -302,6 +324,19 @@ const httpSalonEvento = {
         if (salonConPosicion) {
           return res.status(400).json({
             error: `El salón '${salonConPosicion.nombre_sal}' ya tiene la posición ${posicion_banner} en el banner. Por favor escoja otra diferente.`,
+          });
+        }
+      }
+
+      if (posicion_banner_ubicacion) {
+        const salonPosicionUbicacion = await SalonEvento.findOne({
+          posicion_banner_ubicacion,
+          _id: { $ne: id }, // Excluir el salón actual
+        });
+
+        if (salonPosicionUbicacion) {
+          return res.status(400).json({
+            error: `El salón '${salonPosicionUbicacion.nombre_sal}' ya tiene la posición ${posicion_banner_ubicacion} en el banner de ubicaión. Por favor escoja otra diferente.`,
           });
         }
       }
@@ -330,6 +365,7 @@ const httpSalonEvento = {
           idTipoSalon,
           idUbicacionSalon,
           posicion_banner,
+          posicion_banner_ubicacion,
         },
         { new: true }
       )
